@@ -53,7 +53,9 @@
     "mtxr.sqltools",
     "mtxr.sqltools-driver-pg",
     "mtxr.sqltools-driver-mysql",
-    "mtxr.sqltools-driver-sqlite"
+    "mtxr.sqltools-driver-sqlite",
+    "bodil.prettier-toml",
+    "bungcip.better-toml"
   ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [5000, 5432],
