@@ -4,6 +4,19 @@ RDBMS inspection environment using devcontainer.
 
 ## Environment
 
+### Databases
+
+##### MySQL
+
+Connection information.
+
+| name     | value |
+|----------|-------|
+| host     | mysql |
+| user     | mysql |
+| password | mysql |
+| database | db    |
+
 ### MySQL client
 
 #### Connect to MySQL
