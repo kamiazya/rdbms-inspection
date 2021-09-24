@@ -9,16 +9,16 @@
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "sqltools.connections": [
-      {
-        "name": "PostgreSQL",
-        "driver": "PostgreSQL",
-        "previewLimit": 50,
-        "server": "postgres",
-        "port": 5432,
-        "database": "db",
-        "username": "postgres",
-        "password": "postgres"
-      },
+      // {
+      //   "name": "PostgreSQL",
+      //   "driver": "PostgreSQL",
+      //   "previewLimit": 50,
+      //   "server": "postgres",
+      //   "port": 5432,
+      //   "database": "db",
+      //   "username": "postgres",
+      //   "password": "postgres"
+      // },
       {
         "name": "MySQL",
         "driver": "MySQL",

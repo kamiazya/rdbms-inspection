@@ -13,6 +13,13 @@ RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --g
 ARG NODE_VERSION="none"
 RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
 
+COPY my.cnf /etc/mysql/my.cnf
+RUN chmod 644 /etc/mysql/my.cnf
+
+# Add packages
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends default-mysql-client
+
 # Add python libraries.
 RUN pip3 --disable-pip-version-check --no-cache-dir install poetry && \
     poetry config virtualenvs.create false
@@ -20,10 +27,3 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install poetry && \
 COPY poetry.lock pyproject.toml /
 
 RUN poetry install
-
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
-
-

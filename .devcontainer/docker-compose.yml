@@ -21,7 +21,7 @@ services:
     command: sleep infinity
 
     links:
-      - postgres
+      # - postgres
       - mysql
 
     # Uncomment the next line to use a non-root user for all processes.
@@ -30,28 +30,28 @@ services:
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
-  postgres:
-    image: postgres:latest
-    restart: unless-stopped
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: db
+  # postgres:
+  #   image: postgres:latest
+  #   restart: unless-stopped
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: db
 
-    # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
+  #   # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+  #   # (Adding the "ports" property to this file will not forward from a Codespace.)
   mysql:
     image: mysql:latest
     restart: unless-stopped
     volumes:
-      - mysql-data:/var/lib/postgresql/data
+      - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: db
       MYSQL_USER: mysql
       MYSQL_PASSWORD: mysql
 volumes:
-  postgres-data:
+  # postgres-data:
   mysql-data:
