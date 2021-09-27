@@ -20,10 +20,5 @@ RUN chmod 644 /etc/mysql/my.cnf
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends default-mysql-client
 
-# Add python libraries.
-RUN pip3 --disable-pip-version-check --no-cache-dir install poetry && \
-    poetry config virtualenvs.create false
-
-COPY poetry.lock pyproject.toml /
-
-RUN poetry install
+# Add poetry
+RUN pip3 install poetry
