@@ -32,7 +32,7 @@ jobs:
       run: poetry install
     - name: Init db
       run: |-
-        mysql -h 127.0.0.1 --port 3306 -u mysql -pmysql -e "$(cat $(find ./ -name init.sql))"
+        mysql -h 127.0.0.1 --port 3306 -u mysql -pmysql -e "$(cat $(find ./ -name init.sql))" db
     - name: Lint
       run: make lint
     - name: Test
