@@ -1,3 +1,4 @@
+"Models for application"
 from typing import Optional
 
 from MySQLdb.cursors import Cursor
@@ -46,7 +47,7 @@ class Item(BaseModel):
 
     @staticmethod
     def _update(cur: Cursor, item_id: int, name: str) -> int:
-        cur.execute(Item._query.update, (name, item_id))
+        return cur.execute(Item._query.update, (name, item_id))
 
     def save(self, cur: Cursor):
         if self.item_id is None:

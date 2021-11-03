@@ -1,21 +1,18 @@
+#!/usr/local/bin/python
+"""Command line interface"""
 from contextlib import closing
-from MySQLdb.connections import Connection
 
 import click
+from MySQLdb.connections import Connection
 
-from libs.db.mysql import connect, get_cursor
+from application import app
+from application import pass_conn
+from libs.db.mysql import get_cursor
 from models import Item
-
-@click.group('items')
-@click.pass_context
-def app(ctx: click.Context = None):
-    ctx.obj = ctx.with_resource(closing(connect()))
-
-pass_conn = click.make_pass_decorator(Connection)
 
 
 @app.command()
-@click.option('--drop', is_flag=True, default=False)
+@click.option("--drop", is_flag=True, default=False)
 @pass_conn
 def init(conn: Connection, drop: bool):
     """Init database."""
@@ -24,7 +21,7 @@ def init(conn: Connection, drop: bool):
 
 
 @app.command()
-@click.argument('name')
+@click.argument("name")
 @pass_conn
 def create(conn: Connection, name: str):
     """Create item."""
@@ -34,5 +31,5 @@ def create(conn: Connection, name: str):
     conn.commit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app()
