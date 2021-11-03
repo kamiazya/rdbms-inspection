@@ -37,3 +37,5 @@ jobs:
       run: make lint
     - name: Test
       run: make test
+      env:
+        MYSQL_HOST: 127.0.0.1
