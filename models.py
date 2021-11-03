@@ -1,56 +1,41 @@
 "Models for application"
+from typing import Any
 from typing import Optional
 
-from MySQLdb.cursors import Cursor
+import aiosql
+from MySQLdb.connections import Connection
 from pydantic import BaseModel
+
+from libs.db.adapter.pymysql import PyMySQLAdaptor
+
+
+class DB:
+    _queries: Any = aiosql.from_path("./init.sql", PyMySQLAdaptor)
+
+    @classmethod
+    def init(cls, conn: Connection) -> None:
+        # pylint: disable=E1101
+        cls._queries.init(conn)
 
 
 class Item(BaseModel):
     item_id: Optional[int]
     name: str
 
-    class _query:
-
-        drop_table = "DROP TABLE IF EXISTS items;"
-
-        create_table = (
-            "CREATE TABLE IF NOT EXISTS items ("
-            "  item_id INT(11) NOT NULL AUTO_INCREMENT,"
-            "  name VARCHAR(100),"
-            "  PRIMARY KEY (item_id)"
-            ");"
-        )
-
-        insert = "INSERT INTO items (name) VALUES (%s);"
-        update = "UPDATE items SET name = %s WHERE item_id = %s;"
-
-    @staticmethod
-    def _create_table(cur: Cursor) -> None:
-        print(Item._query.create_table)
-        cur.execute(Item._query.create_table)
-
-    @staticmethod
-    def _drop_table(cur: Cursor) -> None:
-        print(Item._query.drop_table)
-        cur.execute(Item._query.drop_table)
+    _queries: Any = aiosql.from_path("./items.sql", PyMySQLAdaptor)
 
     @classmethod
-    def init(cls, cur: Cursor, drop: bool = False) -> None:
-        if drop:
-            cls._drop_table(cur)
-        cls._create_table(cur)
+    def _insert(cls, conn: Connection, name: str) -> int:
+        # pylint: disable=E1101
+        return cls._queries.insert_item(conn, name=name)
 
-    @staticmethod
-    def _insert(cur: Cursor, name: str) -> int:
-        cur.execute(Item._query.insert, (name,))
-        return cur.lastrowid
+    @classmethod
+    def _update(cls, conn: Connection, item_id: int, name: str) -> int:
+        # pylint: disable=E1101
+        return cls._queries.update_item(conn, item_id=item_id, name=name)
 
-    @staticmethod
-    def _update(cur: Cursor, item_id: int, name: str) -> int:
-        return cur.execute(Item._query.update, (name, item_id))
-
-    def save(self, cur: Cursor):
+    def save(self, conn: Connection):
         if self.item_id is None:
-            self.item_id = self._insert(cur, self.name)
+            self.item_id = self._insert(conn, self.name)
         else:
-            self._update(cur, self.item_id, self.name)
+            self._update(conn, self.item_id, self.name)

@@ -1,23 +1,21 @@
 from contextlib import closing
 
-import pytest
 from MySQLdb.connections import Connection
+from ward import fixture
+from ward import test
 
 from libs.db.mysql import connect
-from libs.db.mysql import get_cursor
 from models import Item
 
 
-@pytest.fixture
-def conn():
+@fixture
+def connection():
     with closing(connect()) as conn_:
-        with closing(get_cursor(conn_)) as cur:
-            Item.init(cur, drop=True)
         yield conn_
 
 
-def test_save(conn: Connection):
-    with closing(get_cursor(conn)) as cur:
-        item = Item(name='test')
-        item.save(cur)
-        assert type(item.item_id) == int
+@test("after executing save method, item_id is set.")
+def _(conn: Connection = connection):
+    item = Item(name="test")
+    item.save(conn)
+    assert type(item.item_id) == int

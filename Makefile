@@ -15,4 +15,4 @@ format:
 	poetry run isort --force-single-line-imports $(TARGET)
 
 test:
-	PYTHONPATH=./$(TARGET) poetry run pytest
+	poetry run ward
