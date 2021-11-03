@@ -5,6 +5,17 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: pass
+          MYSQL_DATABASE: db
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: mysql
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -19,6 +30,9 @@ jobs:
     - run: poetry --version
     - name: Install dependencies
       run: poetry install
+    - name: Init db
+      run: |-
+        mysql -h 127.0.0.1 --port 3306 -u mysql -pmysql -e "$(cat $(find ./ -name init.sql))"
     - name: Lint
       run: make lint
     - name: Test
